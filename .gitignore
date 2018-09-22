@@ -1,0 +1,13 @@
+# CMake/Generated/Build/IDE
+build/
+src/generated/
+.kdev4/
+origin.kdev4
+
+# Ctags
+tags
+
+# YouCompleteMe
+.ycm_extra_conf.py
+
+
