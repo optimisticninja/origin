@@ -13,15 +13,18 @@ namespace Origin
 {
 	class Scanner : public yyFlexLexer
 	{
-	public:
-		Scanner(istream* in) : yyFlexLexer(in) {};
-		virtual ~Scanner() {};
-		// get rid of override virtual function warning
-		using FlexLexer::yylex;
-
-		virtual	int yylex(Parser::semantic_type* const lval, Parser::location_type* location);
 	private:
 		Parser::semantic_type* yylval = nullptr;
+		Parser::location_type* location = nullptr;
+	public:
+		Scanner(istream* in) 
+			: yyFlexLexer(in) {};
+		virtual ~Scanner() {};
+		
+		// Removes override virtual warning
+		using FlexLexer::yylex;
+
+		virtual int yylex(Parser::semantic_type* const lval, Parser::location_type* location);
 	};
 }
 

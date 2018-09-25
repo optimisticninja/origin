@@ -23,7 +23,7 @@ add_executable(origin tags
 	${SOURCE_DIR}/compilerargs.cpp
 	${FLEX_lexer_OUTPUTS} 
 	${BISON_parser_OUTPUTS})
-set_property(TARGET origin PROPERTY CXX_STANDARD 14)
+set_property(TARGET origin PROPERTY CXX_STANDARD 17)
 set_source_files_properties(tags PROPERTIES GENERATED true)
 add_custom_command(OUTPUT tags
 	COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extra=+q . 

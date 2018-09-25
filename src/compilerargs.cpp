@@ -5,11 +5,8 @@
 using std::cout;
 using std::endl;
 
-static const string DESCRIPTION = "Allowed compiler options";
-
 CompilerArgs::CompilerArgs(const int argc, const char** argv)
 {
-	this->desc.add(DESCRIPTION);
 	this->desc.add_options()
 		("help,h", "listing of compiler options")
 		("files", po::value<vector<string>> (&input_filenames), "input files");

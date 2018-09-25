@@ -1,5 +1,7 @@
 %{
+	#include <algorithm>
 	#include <string>
+	#include <iostream>
 	#include "../scanner.hpp"
 
 	/* msvc2010 requires that we exclude this header file. */
@@ -11,7 +13,12 @@
 	#define yyterminate() return token::END
 
 	using token = Origin::Parser::token;
+	using std::cout;
 	using std::string;
+	using std::transform;
+	using std::stof;
+	using std::stod;
+	using std::stoi;
 %}
 
 %option debug
@@ -25,25 +32,36 @@
 	yylval = lval;
 %}
 
-[a-z]		{
-			return token::LOWER;
+[0-9]*?\.[0-9]+(([fF])(32|64)?)? /** Floating point literal - defaults to F64 */ {
+	string dup(yytext);
+	transform(dup.begin(), dup.end(), dup.begin(), ::tolower);
+	
+	string suffix;
+	size_t suffix_start = dup.find('f');
+	
+	if (suffix_start != string::npos) {
+		suffix = dup.substr(suffix_start, string::npos);
+		
+		if (suffix.compare("f32") == 0 || suffix.length() == 1) {
+			yylval->build<float>(stof(yytext));
+			return token::F32;
 		}
+	}
+	
+	yylval->build<double>(stod(yytext));
+	return token::F64;
+}
 
-[A-Z]		{
-			return token::UPPER;
-		}
+[0-9]+(([sS]|[uU])(8|16|32|64)|[fF](32|64)?)? {
+	yylval->build<int>(stoi(yytext));
+	return token::S32;
+}
 
-[a-zA-Z]+	{
-			yylval->build<string>(yytext);
-			return token::WORD;
-		}
+[ \t] ; // Ignore whitespace
 
-\n		{
-			loc->lines();
-			return token::NEWLINE;
-		}
+\n {
+	loc->lines();
+}
 
-.        	{
-			return token::CHAR;
-		}
+. ;
 %%

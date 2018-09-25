@@ -1,12 +1,17 @@
 #include <cctype>
 #include <fstream>
 #include <cassert>
+#include <string>
+#include <type_traits>
+#include <cmath>
 
 #include "driver.hpp"
 
 using std::ifstream;
 using std::bad_alloc;
+using std::cout;
 using std::cerr;
+using std::endl;
 
 Origin::Driver::~Driver()
 {
@@ -39,76 +44,31 @@ void Origin::Driver::parse(istream& stream)
 
 void Origin::Driver::parse_helper(istream& stream)
 {
-	delete scanner;
+	delete this->scanner;
 
 	try {
-		scanner = new Origin::Scanner(&stream);
+		this->scanner = new Origin::Scanner(&stream);
 	} catch (bad_alloc& ba) {
 		cerr << "Failed to allocate scanner: (" << ba.what() << "), exiting!!\n";
 		exit(EXIT_FAILURE);
 	}
 
-	delete parser;
+	delete this->parser;
 
 	try {
-		parser = new Origin::Parser((*scanner), (*this));
+		this->parser = new Origin::Parser((*this->scanner), (*this));
 	} catch (bad_alloc& ba) {
 		cerr << "Failed to allocate parser: (" << ba.what() << "), exiting!!\n";
 		exit(EXIT_FAILURE);
 	}
 
-	if (parser->parse()) {
+	if (this->parser->parse()) {
 		cerr << "Parse failed!!\n";
 	}
-}
-
-void Origin::Driver::add_upper()
-{
-	uppercase++;
-	chars++;
-	words++;
-}
-
-void Origin::Driver::add_lower()
-{
-	lowercase++;
-	chars++;
-	words++;
-}
-
-void Origin::Driver::add_word(const string& word)
-{
-	words++;
-	chars += word.length();
-
-	for (const char& c : word) {
-		if (islower(c)) {
-			lowercase++;
-		} else if (isupper(c)) {
-			uppercase++;
-		}
-	}
-}
-
-void Origin::Driver::add_newline()
-{
-	lines++;
-	chars++;
-}
-
-void Origin::Driver::add_char()
-{
-	chars++;
 }
 
 ostream& Origin::Driver::print(ostream& stream)
 {
 	stream << RED  << "Results: " << RESET << "\n";
-	stream << BLUE << "Uppercase: " << RESET << uppercase << "\n";
-	stream << BLUE << "Lowercase: " << RESET << lowercase << "\n";
-	stream << BLUE << "Lines: " << RESET << lines << "\n";
-	stream << BLUE << "Words: " << RESET << words << "\n";
-	stream << BLUE << "Characters: " << RESET << chars << "\n";
 	return stream;
 }
-

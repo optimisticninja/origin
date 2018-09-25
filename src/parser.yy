@@ -29,6 +29,7 @@
 %code
 {
 	#include <iostream>
+	#include <cstdint>
 	#include <cstdlib>
 	#include <fstream>
 	#include "../driver.hpp"
@@ -40,11 +41,16 @@
 %define parse.assert
 
 %token				END		0     "end of file"
-%token				UPPER
-%token				LOWER
-%token	<std::string>	WORD
-%token				NEWLINE
-%token		 		CHAR
+%token	<uint8_t>	U8
+%token	<uint16_t>	U16
+%token	<uint32_t>	U32
+%token	<uint64_t>	U64
+%token	<int8_t>		S8
+%token	<int16_t>	S16
+%token	<int32_t>	S32
+%token	<int64_t>	S64
+%token	<float>		F32
+%token	<double>	F64
 
 %locations
 
@@ -58,12 +64,8 @@ list
 	;
 
 item
-	: UPPER		{ driver.add_upper(); }
-	| LOWER		{ driver.add_lower(); }
-	| WORD		{ driver.add_word($1); }
-	| NEWLINE	{ driver.add_newline(); }
-	| CHAR		{ driver.add_char(); }
-  ;
+	: U8	| U16 | U32 | U64 | S8 | S16 | S32 | S64 { driver.add_number($1); }
+	;
 
 %%
 
