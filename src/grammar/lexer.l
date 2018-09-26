@@ -2,7 +2,7 @@
 	#include <algorithm>
 	#include <string>
 	#include <iostream>
-	#include "../scanner.hpp"
+	#include "../grammar/scanner.hpp"
 
 	/* msvc2010 requires that we exclude this header file. */
 	#define YY_NO_UNISTD_H

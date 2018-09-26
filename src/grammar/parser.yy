@@ -32,7 +32,7 @@
 	#include <cstdint>
 	#include <cstdlib>
 	#include <fstream>
-	#include "../driver.hpp"
+	#include "../grammar/driver.hpp"
 	#undef yylex
 	#define yylex scanner.yylex
 }

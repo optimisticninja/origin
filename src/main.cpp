@@ -7,7 +7,7 @@
 #include <boost/program_options.hpp>
 
 #include "compilerargs.hpp"
-#include "driver.hpp"
+#include "grammar/driver.hpp"
 
 
 namespace po = boost::program_options;

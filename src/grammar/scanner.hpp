@@ -4,8 +4,8 @@
 	#include <FlexLexer.h>
 #endif
 
-#include "generated/parser.tab.hh"
-#include "generated/location.hh"
+#include "../generated/parser.tab.hh"
+#include "../generated/location.hh"
 
 using std::istream;
 

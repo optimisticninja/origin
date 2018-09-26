@@ -21,14 +21,14 @@ set(TEST_DIR ${PROJECT_SOURCE_DIR}/tests)
 # Create src/generated for flex/bison
 add_custom_target(create-generated ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${GENERATED_DIR})
 
-BISON_TARGET(parser ${SOURCE_DIR}/parser.yy ${GENERATED_DIR}/parser.tab.cc)
-FLEX_TARGET(lexer ${SOURCE_DIR}/lexer.l ${GENERATED_DIR}/lexer.yy.cc)
+BISON_TARGET(parser ${SOURCE_DIR}/grammar/parser.yy ${GENERATED_DIR}/parser.tab.cc)
+FLEX_TARGET(lexer ${SOURCE_DIR}/grammar/lexer.l ${GENERATED_DIR}/lexer.yy.cc)
 ADD_FLEX_BISON_DEPENDENCY(lexer parser create-generated)
 
 # Origin binary
 add_executable(origin tags 
 	${SOURCE_DIR}/main.cpp
-	${SOURCE_DIR}/driver.cpp
+	${SOURCE_DIR}/grammar/driver.cpp
 	${SOURCE_DIR}/compilerargs.cpp
 	${FLEX_lexer_OUTPUTS} 
 	${BISON_parser_OUTPUTS})
@@ -72,7 +72,7 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
 endif()
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(tests ${TEST_DIR}/tests_main.cpp)
+add_executable(tests ${TEST_DIR}/ast.cpp)
 target_link_libraries(tests gtest_main)
 add_test(NAME ast/ast COMMAND tests)
 # End Google Test ################################################

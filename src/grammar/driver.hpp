@@ -4,9 +4,9 @@
 #include <istream>
 #include <type_traits>
 
-#include "util/typeview.hpp"
+#include "../util/typeview.hpp"
+#include "../generated/parser.tab.hh"
 #include "scanner.hpp"
-#include "generated/parser.tab.hh"
 
 using std::string;
 using std::cout;
