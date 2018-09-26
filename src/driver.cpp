@@ -6,6 +6,7 @@
 #include <cmath>
 
 #include "driver.hpp"
+#include "util/ansicolors.hpp"
 
 using std::ifstream;
 using std::bad_alloc;

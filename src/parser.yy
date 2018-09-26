@@ -64,13 +64,13 @@ list
 	;
 
 item
-	: U8	| U16 | U32 | U64 | S8 | S16 | S32 | S64 { driver.add_number($1); }
+	: U8	| U16 | U32 | U64 | S8 | S16 | S32 | S64 | F32 | F64 { driver.add_number($1); }
 	;
 
 %%
 
 void Origin::Parser::error(const location_type& l, const std::string& err_message)
 {
-	std::cerr << "Error: " << err_message << " at " << l << "\n";
+	std::cerr << "ERROR: " << err_message << " at " << l << "\n";
 }
 

@@ -32,27 +32,27 @@
 	yylval = lval;
 %}
 
-[0-9]*?\.[0-9]+(([fF])(32|64)?)? /** Floating point literal - defaults to F64 */ {
+[0-9]*?\.[0-9]+([fF](32|64)?)? /** Floating point literal - defaults to F64 */ {
 	string dup(yytext);
 	transform(dup.begin(), dup.end(), dup.begin(), ::tolower);
-	
 	string suffix;
 	size_t suffix_start = dup.find('f');
 	
 	if (suffix_start != string::npos) {
 		suffix = dup.substr(suffix_start, string::npos);
+		dup = dup.substr(0, suffix_start - 1);
 		
 		if (suffix.compare("f32") == 0 || suffix.length() == 1) {
-			yylval->build<float>(stof(yytext));
+			yylval->build<float>(stof(dup));
 			return token::F32;
 		}
 	}
 	
-	yylval->build<double>(stod(yytext));
+	yylval->build<double>(stod(dup));
 	return token::F64;
 }
 
-[0-9]+(([sS]|[uU])(8|16|32|64)|[fF](32|64)?)? {
+[0-9]+(([sSuU])(8|16|32|64))? {
 	yylval->build<int>(stoi(yytext));
 	return token::S32;
 }

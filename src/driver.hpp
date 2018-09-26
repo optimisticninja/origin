@@ -4,6 +4,7 @@
 #include <istream>
 #include <type_traits>
 
+#include "util/typeview.hpp"
 #include "scanner.hpp"
 #include "generated/parser.tab.hh"
 
@@ -22,9 +23,6 @@ namespace Origin
 	private:
 		Parser* parser = nullptr;
 		Scanner* scanner = nullptr;
-		const string RED = "\033[1;31m";
-		const string BLUE = "\033[1;36m";
-		const string RESET = "\033[0m";
 		void parse_helper(istream& stream);
 		
 	public:
@@ -36,7 +34,7 @@ namespace Origin
 		template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
 		void add_number(T num)
 		{
-			cout << "Found number: " << num << "\n";
+			cout << "\t{decltype=" << type_name<decltype(num)>() << ", val=" << num << "}\n";
 		}
 	};
 }
